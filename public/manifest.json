@@ -1,0 +1,17 @@
+{
+    "name": "HNSM Store",
+    "short_name": "HNSM",
+    "start_url": "/index.php",
+    "background_color": "#000B49",
+    "description": "Sistem Kasir & Manajemen Stok dan Produk",
+    "display": "fullscreen",
+    "theme_color": "#000B49",
+    "icons": [
+        {
+            "src": "assets/logo/logo.jpeg",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
