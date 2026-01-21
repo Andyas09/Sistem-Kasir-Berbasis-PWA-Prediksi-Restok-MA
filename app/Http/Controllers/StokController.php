@@ -374,7 +374,7 @@ class StokController extends Controller
 
         if ($request->filled('produk_id') && $request->filled('periode')) {
             $produk_id = $request->produk_id;
-            $periode = (int)$request->periode; // 7, 14, 30 hari
+            $periode = (int)$request->periode;
 
             $produkModel = Produk::find($produk_id);
             $stokSekarang = $produkModel->stok ?? 0;

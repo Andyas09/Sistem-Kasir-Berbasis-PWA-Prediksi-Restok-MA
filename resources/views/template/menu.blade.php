@@ -177,3 +177,33 @@
       </div>
       <!-- /.sidebar -->
     </aside>
+     <script>
+    function togglePosMenu(event) {
+      event.preventDefault();
+      let submenu = document.getElementById("subMenu");
+      submenu.style.display = submenu.style.display === "none" ? "block" : "none";
+    }
+    
+    function toggleStokMenu(event) {
+      event.preventDefault();
+      let submenu = document.getElementById("subMenuStok");
+      submenu.style.display = (submenu.style.display === "none" || submenu.style.display === "")
+        ? "block"
+        : "none";
+    }
+    
+    
+    // Service Worker for PWA
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(
+        (registration) => {
+          console.log("Service worker registration succeeded:", registration);
+        },
+        (error) => {
+          console.error(`Service worker registration failed: ${error}`);
+        },
+      );
+    } else {
+      console.error("Service workers are not supported.");
+    }
+  </script>

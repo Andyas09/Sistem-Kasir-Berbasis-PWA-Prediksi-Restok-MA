@@ -31,24 +31,6 @@
         : "none";
     }
     
-    // iPad touch optimization
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add touch support for sidebar toggle
-      $('[data-widget="pushmenu"]').on('touchstart', function(e) {
-        e.preventDefault();
-        $(this).trigger('click');
-      });
-      
-      // Handle sidebar menu clicks on iPad
-      $('.nav-sidebar .nav-link').on('touchstart', function(e) {
-        // Add active state visual feedback
-        $(this).addClass('touch-active');
-        setTimeout(() => {
-          $(this).removeClass('touch-active');
-        }, 300);
-      });
-    });
-    
     // Service Worker for PWA
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").then(
