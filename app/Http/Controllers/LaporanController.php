@@ -29,9 +29,8 @@ class LaporanController extends Controller
             'barang_masuk' => 0,
             'barang_keluar' => 0,
         ];
-
-        // ================= PENJUALAN =================
         if ($jenis == 'penjualan' || !$jenis) {
+
             $penjualan = Transaksi_detail::with('produk', 'transaksi')
                 ->when($dari && $sampai, function ($q) use ($dari, $sampai) {
                     $q->whereHas('transaksi', function ($t) use ($dari, $sampai) {
@@ -48,16 +47,20 @@ class LaporanController extends Controller
                     'total' => $p->sub_total,
                 ]);
             }
-
-            $ringkasan['total_transaksi'] += $penjualan->count();
-            $ringkasan['total_omzet'] += $penjualan->sum(callback: 'sub_total');
+            $ringkasan['total_transaksi'] += $penjualan
+                ->pluck('transaksi_id')
+                ->unique()
+                ->count();
+            $ringkasan['total_omzet'] += $penjualan->sum('sub_total');
         }
-
-        // ================= STOK MASUK =================
         if ($jenis == 'stok_masuk' || !$jenis) {
+
             $masuk = StokMasuk::with('produk')
-                ->when($dari && $sampai, fn($q) => $q->whereBetween('tanggal', [$dari, $sampai]))
-                ->get();
+                ->when(
+                    $dari && $sampai,
+                    fn($q) =>
+                    $q->whereBetween('updated_at', [$dari, $sampai])
+                )->get();
 
             foreach ($masuk as $m) {
                 $laporan->push([
@@ -71,12 +74,14 @@ class LaporanController extends Controller
 
             $ringkasan['barang_masuk'] += $masuk->sum('jumlah');
         }
-
-        // ================= STOK KELUAR =================
         if ($jenis == 'stok_keluar' || !$jenis) {
+
             $keluar = StokKeluar::with('produk')
-                ->when($dari && $sampai, fn($q) => $q->whereBetween('updated_at', [$dari, $sampai]))
-                ->get();
+                ->when(
+                    $dari && $sampai,
+                    fn($q) =>
+                    $q->whereBetween('updated_at', [$dari, $sampai])
+                )->get();
 
             foreach ($keluar as $k) {
                 $laporan->push([
@@ -87,13 +92,15 @@ class LaporanController extends Controller
                     'total' => $k->total,
                 ]);
             }
-
             $ringkasan['barang_keluar'] += $keluar->sum('jumlah');
         }
+        $laporan = $laporan->sortByDesc('tanggal')->values();
 
-        // urutkan tanggal
-        $laporan = $laporan->sortByDesc('updated_at');
-
-        return view('laporan.index', compact('laporan', 'ringkasan', 'dari', 'sampai', 'jenis'), $this->setActive('laporan'));
+        return view(
+            'laporan.index',
+            compact('laporan', 'ringkasan', 'dari', 'sampai', 'jenis'),
+            $this->setActive('laporan')
+        );
     }
+
 }

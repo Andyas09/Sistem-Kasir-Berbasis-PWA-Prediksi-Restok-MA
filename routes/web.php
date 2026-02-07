@@ -9,6 +9,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,18 @@ Route::middleware(['auth', 'role:Admin,Kasir'])->group(function () {
         ->name('produk.update');
     Route::delete('/produks/{id}', [ProdukController::class, 'destroy'])
         ->name('produk.destroy');
+
+});
+
+Route::middleware(['auth', 'role:Admin,Kasir'])->group(function () {
+    Route::get('/supplier', [SupplierController::class, 'index'])
+        ->name('supplier.index');
+    Route::post('/store-supplier', [SupplierController::class, 'store'])
+        ->name('supplier.store');
+    Route::put('/supplier/{id}', [SupplierController::class, 'update'])
+        ->name('supplier.update');
+    Route::delete('/supplier-destroy/{id}', [SupplierController::class, 'destroy'])
+        ->name('supplier.destroy');
 
 });
 Route::middleware(['auth', 'role:Admin,Kasir'])->prefix('stok')->name('stok.')->group(function () {

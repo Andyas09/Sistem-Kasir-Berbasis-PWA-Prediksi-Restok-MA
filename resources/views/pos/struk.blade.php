@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Struk Penjualan</title>
+
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -14,16 +15,22 @@
             .noprn { display: none; }
         }
 
+        /* =====================
+           UKURAN STRUK
+           ===================== */
         .container {
             width: 260px; /* 58mm ≈ 260px | 80mm ≈ 320px */
             margin: auto;
         }
 
+        /* =====================
+           ALIGN
+           ===================== */
         .center { text-align: center; }
         .right { text-align: right; }
         .left { text-align: left; }
         .bold { font-weight: bold; }
-        .clear { clear: both; }
+        .small { font-size: 10px; }
 
         hr {
             border-top: 1px dashed #000;
@@ -40,6 +47,17 @@
             vertical-align: top;
         }
 
+        /* =====================
+           LOGO
+           ===================== */
+        .logo {
+            max-width: 70px;
+            margin-bottom: 4px;
+        }
+
+        /* =====================
+           BUTTON
+           ===================== */
         .btn {
             padding: 6px 12px;
             margin: 5px;
@@ -52,10 +70,6 @@
         .btn:hover {
             opacity: 0.8;
         }
-
-        .footer-text {
-            font-size: 11px;
-        }
     </style>
 </head>
 
@@ -63,12 +77,21 @@
 
 <div class="container">
 
-    {{-- HEADER --}}
-    <div class="center bold">
-        HNSM STORE
-    </div>
+    <!-- =====================
+         HEADER
+         ===================== -->
     <div class="center">
-        Bukti Pembelian
+        <img src="{{ asset('assets/logo/logo.jpeg') }}" class="logo" alt="Logo">
+        <div class="small">
+            Tejowarno, RT.1/RW.14, Bakalan, Tamanagung<br>
+            Kec. Muntilan, Kabupaten Magelang<br> Jawa Tengah
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="center bold">
+        BUKTI PEMBELIAN
     </div>
     <div class="center">
         {{ $transaksi->details->first()->no_invoice ?? '-' }}
@@ -76,7 +99,9 @@
 
     <hr>
 
-    {{-- INFO --}}
+    <!-- =====================
+         INFO TRANSAKSI
+         ===================== -->
     <table>
         <tr>
             <td>Tanggal</td>
@@ -94,7 +119,9 @@
 
     <hr>
 
-    {{-- ITEM --}}
+    <!-- =====================
+         ITEM
+         ===================== -->
     <table>
         @foreach($transaksi->details as $d)
             <tr>
@@ -115,7 +142,9 @@
 
     <hr>
 
-    {{-- TOTAL --}}
+    <!-- =====================
+         TOTAL
+         ===================== -->
     <table>
         <tr>
             <td class="bold">Total</td>
@@ -145,17 +174,20 @@
 
     <hr>
 
-    {{-- FOOTER --}}
-    <div class="center footer-text">
-        Terima kasih atas kunjungan Anda 🙏<br>
+    <!-- =====================
+         FOOTER
+         ===================== -->
+    <div class="bold center small">
+        IN HNSM WE TRUST<br>
         Barang yang sudah dibeli<br>
         tidak dapat dikembalikan
     </div>
 
-    {{-- ACTION --}}
+    <!-- =====================
+         ACTION
+         ===================== -->
     <div class="center noprn">
         <button class="btn" onclick="window.print()">Cetak</button>
-
         <a href="{{ route('pos.transaksi') }}">
             <button class="btn">Tutup</button>
         </a>

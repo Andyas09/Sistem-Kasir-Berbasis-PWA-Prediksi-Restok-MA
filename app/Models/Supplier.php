@@ -14,7 +14,7 @@ class Supplier extends Authenticatable
     protected $table = 'supplier';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'nama_suoplier',
+        'nama_supplier',
         'alamat',
         'telepon',
     ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
+use App\Models\Supplier;
 class ProdukController extends Controller
 {
     private function setActive($page)
@@ -16,37 +17,40 @@ class ProdukController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Produk::with('kategori');
+        $query = Produk::with('kategori', 'supplier');
 
-        // 🔍 Filter Nama Produk
         if ($request->search) {
             $query->where('nama_produk', 'like', '%' . $request->search . '%');
         }
 
-        // 🗂 Filter Kategori
         if ($request->kategori) {
             $query->where('kategori_id', $request->kategori);
         }
-        //filter ukuran
+
         if ($request->ukuran) {
             $query->where('ukuran', $request->ukuran);
         }
 
-        // 📦 Filter Stok
-        if ($request->stok == 'habis') {
+        if ($request->stok === 'habis') {
             $query->where('stok', 0);
         }
 
-        if ($request->stok == 'ada') {
+        if ($request->stok === 'ada') {
             $query->where('stok', '>', 0);
         }
+        $produk = $query->orderBy('updated_at', 'desc')->get();
 
-        $produk = $query->paginate(10)->withQueryString();
         $ukurans = Produk::select('ukuran')->distinct()->pluck('ukuran');
         $kategoris = Kategori::all();
+        $supplier = Supplier::all();
 
-        return view('produk.index', compact('produk', 'kategoris', 'ukurans'), $this->setActive('produk'));
+        return view(
+            'produk.index',
+            compact('produk', 'kategoris', 'ukurans', 'supplier'),
+            $this->setActive('produk')
+        );
     }
+
 
     public function store(Request $request)
     {
@@ -58,6 +62,7 @@ class ProdukController extends Controller
             'ukuran_lainnya' => 'nullable|string',
             'harga_modal' => 'required|numeric',
             'harga_jual' => 'required|numeric',
+            'supplier_id' => 'required',
             'stok' => 'required|numeric',
             'deskripsi' => 'required',
             'gambar' => 'nullable|max:2048',
@@ -76,6 +81,7 @@ class ProdukController extends Controller
         Produk::create([
             'kategori_id' => $request->kategori_id,
             'nama_produk' => $request->nama_produk,
+            'supplier_id' => $request->supplier_id,
             'warna' => $request->warna,
             'deskripsi' => $request->deskripsi,
             'ukuran' => $ukuran,
@@ -98,6 +104,7 @@ class ProdukController extends Controller
             'ukuran_lainnya' => 'nullable|string',
             'harga_modal' => 'required|numeric',
             'harga_jual' => 'required|numeric',
+            'supplier_id' => 'required',
             'stok' => 'required|numeric',
             'gambar' => 'nullable|max:2048'
         ]);
@@ -107,8 +114,9 @@ class ProdukController extends Controller
         $produk->update([
             'kategori_id' => $request->kategori_id,
             'nama_produk' => $request->nama_produk,
-            'warna' => $request->warna, 
+            'warna' => $request->warna,
             'ukuran' => $ukuran,
+            'supplier_id' => $request->supplier_id,
             'harga_modal' => $request->harga_modal,
             'harga_jual' => $request->harga_jual,
             'stok' => $request->stok,
@@ -134,7 +142,7 @@ class ProdukController extends Controller
         }
         $produk->delete();
 
-        return redirect()->route('produk.index')->with('pesan_sukses', 'Produk berhasil dihapus.');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 
 }

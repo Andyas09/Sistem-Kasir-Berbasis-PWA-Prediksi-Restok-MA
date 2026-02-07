@@ -2,11 +2,22 @@
 @include('template.menu')
 
 <div class="content-wrapper">
-
-    <!-- HEADER -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Data Stok Keluar</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Manajemen Data Stok Keluar</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+
+                    <a href="{{ route('stok.keluar.excelE', request()->query()) }}" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i> Export Excel
+                    </a>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#modalTambah"><i class="fas fa-plus"></i>
+                        Tambah Stok Keluar
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -94,19 +105,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#modalTambah">
-                        Tambah Stok Keluar
-                    </button>
-                </div>
-                <div class="card-footer text-right">
-                    <a href="{{ route('stok.keluar.excelE', request()->query()) }}" class="btn btn-success">
-                        <i class="fa fa-file-excel"></i> Export Excel
-                    </a>
-                    <a href="{{ route('stok.keluar.exportP', request()->query()) }}" class="btn btn-danger">
-                        <i class="fa fa-file-pdf"></i> Export PDF
-                    </a>
                 </div>
                 <div class="modal fade" id="modalTambah" tabindex="-1">
                     <div class="modal-dialog modal-lg">

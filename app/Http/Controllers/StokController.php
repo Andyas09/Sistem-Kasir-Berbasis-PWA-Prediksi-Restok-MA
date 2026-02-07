@@ -66,7 +66,6 @@ class StokController extends Controller
             'produk_id' => 'required',
             'supplier_id' => 'required',
             'jumlah' => 'required|numeric|min:1',
-            'satuan' => 'required',
             'catatan' => 'required',
             'harga_beli' => 'required|numeric|min:0',
             'diskon' => 'nullable|numeric|min:0',
@@ -79,7 +78,6 @@ class StokController extends Controller
                 'produk_id' => $request->produk_id,
                 'supplier_id' => $request->supplier_id,
                 'jumlah' => $request->jumlah,
-                'satuan' => $request->satuan,
                 'sku' => 'SKU-' . now()->format('dmY') . '-' . str_pad($request->produk_id, 4, '0', STR_PAD_LEFT),
                 'harga_beli' => $request->harga_beli,
                 'diskon' => $request->diskon ?? 0,
@@ -192,13 +190,7 @@ class StokController extends Controller
     public function destroy_opname($id)
     {
         $opname = Opname::findOrFail($id);
-        foreach ($opname->details as $detail) {
-            $produk = $detail->produk;
-            $produk->update([
-                'stok' => $produk->stok - $detail->stok_akhir + $detail->stok_awal
-            ]);
-        }
-        $opname->details()->delete();
+        $opname->opname()->delete();
         $opname->delete();
 
         return redirect()->back()->with('success', 'Sesi Stock Opname berhasil dihapus!');

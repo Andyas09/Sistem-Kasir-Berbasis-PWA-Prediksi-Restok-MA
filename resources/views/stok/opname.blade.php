@@ -27,7 +27,20 @@ Swal.fire({
     <!-- HEADER -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Stok Opname</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Stock Opname</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+
+                    <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i> Export Excel
+                    </a>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#modalTambahSO">
+                        Tambah Sesi SO Baru
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -83,8 +96,6 @@ Swal.fire({
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="" class="btn btn-info btn-sm">Detail</a>
-                                        <a href="" class="btn btn-warning btn-sm">Edit</a>
                                         <form action="{{ route('stok.so.destroy', $s->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
@@ -98,19 +109,6 @@ Swal.fire({
 
                         </tbody>
                     </table>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#modalTambahSO">
-                        Tambah Sesi SO Baru
-                    </button>
-                </div>
-                <div class="card-footer text-right">
-                    <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
-                        <i class="fa fa-file-excel"></i> Export Excel
-                    </a>
-                    <a href="{{ route('stok.masuk.exportP', request()->query()) }}" class="btn btn-danger">
-                        <i class="fa fa-file-pdf"></i> Export PDF
-                    </a>
                 </div>
             </div>
 

@@ -80,6 +80,13 @@
                 <p class="text-white">Produk</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('supplier.index') }}"
+                class="nav-link {{ ($activeSupplier ?? '') == 'supplier' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-truck"></i>
+                <p class="text-white">Supplier</p>
+              </a>
+            </li>
 
             @if($role === 'Admin')
             <!-- Stok -->

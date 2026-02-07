@@ -9,6 +9,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="manifest" href="{{ asset('/manifest.json') }}">
   <meta name="theme-color" content="#000B49">
+  <link rel="icon" type="image/png" href="{{ asset('assets/logo/logo.jpeg') }}">
   <link rel="apple-touch-icon" href="{{ asset('assets/logo/logo.jpeg') }}">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -56,7 +57,28 @@
     background-color: darkred;
     color: white;
   }
+
+  /* iPad & Tablet */
+  @media (max-width: 1024px) {
+    body.sidebar-mini .main-sidebar {
+      transform: translateX(-250px);
+    }
+
+    body.sidebar-open .main-sidebar {
+      transform: translateX(0);
+    }
+
+    .content-wrapper {
+      margin-left: 0 !important;
+    }
+
+    .nav-link {
+      padding: 12px 16px;
+      font-size: 16px;
+    }
+  }
 </style>
+
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
@@ -195,5 +217,3 @@
         });
       });
     </script>
-
-    

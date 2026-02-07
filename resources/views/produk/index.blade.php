@@ -68,6 +68,11 @@ Swal.fire({
                 <div class="col-sm-6">
                     <h1>Data Produk</h1>
                 </div>
+                <div class="col-sm-6 text-right">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#tambahProduk">
+                        <i class="fas fa-plus"></i> Tambah Produk
+                    </button>
+                    </div>
             </div>
         </div>
     </section>
@@ -146,6 +151,7 @@ Swal.fire({
                                     <th>Deskripsi</th>
                                     <th>Harga Jual</th>
                                     <th>Stok</th>
+                                    <th>Supplier</th>
                                     <th width="150">Aksi</th>
                                 </tr>
                             </thead>
@@ -171,6 +177,7 @@ Swal.fire({
                                         <td>{{ $p->deskripsi }}</td>
                                         <td>Rp {{ number_format($p->harga_jual) }}</td>
                                         <td>{{ $p->stok }}</td>
+                                        <td>{{ $p->supplier->nama_supplier ?? '-'}}</td>
                                         <td>
                                             <button class="btn btn-warning btn-sm" data-toggle="modal"
                                                 data-target="#edit{{ $p->id }}">
@@ -198,8 +205,21 @@ Swal.fire({
                                                         <button type="button" class="close"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
-
                                                     <div class="modal-body">
+                                                        <div class="form-group">
+    <label>Supplier</label>
+    <select name="supplier_id" class="form-control" required>
+        <option value="">-- Pilih Supplier --</option>
+        @foreach($supplier as $s)
+            <option 
+                value="{{ $s->id }}"
+                {{ $p->supplier_id == $s->id ? 'selected' : '' }}>
+                {{ $s->nama_supplier }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
                                                         <div class="form-group">
                                                             <label>Nama Produk</label>
                                                             <input type="text" name="nama_produk"
@@ -283,7 +303,7 @@ Swal.fire({
 
                                                         <div class="form-group">
                                                             <label>Gambar</label>
-                                                            <input type="file" name="image" class="form-control" id="inputGambar">
+                                                            <input type="file" name="gambar" class="form-control" id="inputGambar">
                                                             <small class="text-muted">Kosongkan jika tidak ingin mengganti gambar</small><br>
                                                             @if($p->gambar && file_exists(public_path('storage/' . $p->gambar)))
                                                             <img src="{{ asset('storage/' . $p->gambar) }}" width="100" class="mt-2">
@@ -336,11 +356,7 @@ Swal.fire({
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="card-footer">
-                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#tambahProduk">
-                        Tambah Produk
-                    </button>
-                </div>
+                        
                     </div>
                 </div>
                 {{-- ================= MODAL TAMBAH PRODUK ================= --}}
@@ -357,11 +373,20 @@ Swal.fire({
                                 </div>
 
                                 <div class="modal-body">
-
+                                    <div class="'form-group">
+                                            <label>Supplier</label>
+                                            <select name="supplier_id" class="form-control" required>
+                                                <option value="">-- Pilih Supplier --</option>
+                                                @foreach($supplier as $s)
+                                                    <option value="{{ $s->id }}">{{ $s->nama_supplier }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
                                     <div class="form-group">
                                         <label>Nama Produk</label>
                                         <input type="text" name="nama_produk" class="form-control" required>
                                     </div>
+                                    
 
                                     <div class="form-group">
     <label class="d-block mb-2">Ukuran</label>

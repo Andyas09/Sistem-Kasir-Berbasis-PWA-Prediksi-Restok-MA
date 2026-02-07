@@ -46,7 +46,6 @@ class StokmasukExport implements FromCollection, WithHeadings, WithMapping
             'Variasi',
             'Ukuran',
             'Jumlah',
-            'Satuan',
             'Saldo Stok',
             'Catatan',
             'Supplier'
@@ -64,7 +63,6 @@ class StokmasukExport implements FromCollection, WithHeadings, WithMapping
             $sm->produk->warna ?? '-',
             $sm->produk->ukuran ?? '-',
             $sm->jumlah,
-            $sm->satuan,
             $sm->produk->stok ?? 0,
             $sm->catatan,
             $sm->supplier->nama_supplier ?? '-',

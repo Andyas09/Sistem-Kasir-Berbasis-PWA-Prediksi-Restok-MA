@@ -88,7 +88,7 @@ return [
     | generating more password reset tokens. This prevents the user from
     | quickly generating a very large amount of password reset tokens.
     |
-    */
+    */  
 
     'passwords' => [
         'users' => [

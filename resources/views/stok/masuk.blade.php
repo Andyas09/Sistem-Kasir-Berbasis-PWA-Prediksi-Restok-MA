@@ -2,32 +2,45 @@
 @include('template.menu')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if(session('success'))
-<script>
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil',
-    text: '{{ session('success') }}',
-    timer: 2000,
-    showConfirmButton: false
-});
-</script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    </script>
 @endif
 
 @if(session('error'))
-<script>
-Swal.fire({
-    icon: 'error',
-    title: 'Gagal',
-    text: '{{ session('error') }}'
-});
-</script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}'
+        });
+    </script>
 @endif
 <div class="content-wrapper">
 
     <!-- HEADER -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Data Stok Masuk</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Manajemen Data Stok Masuk</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+
+                    <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i> Export Excel
+                    </a>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#modalTambah">
+                        <i class="fas fa-plus"></i> Tambah Stok Masuk
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -90,14 +103,12 @@ Swal.fire({
                                 <th>Supplier</th>
                                 <th>Produk</th>
                                 <th>Variasi/Ukuran</th>
-                                <th>Satuan</th>
                                 <th>Qty</th>
-                                <th>Saldo Stok</th>
-                                <th>Harga Beli</th>
                                 <th>Diskon</th>
+                                <th>Saldo Stok</th>
+                                <th>Harga Per PCS</th>
                                 <th>Total</th>
                                 <th>Catatan</th>
-                                <th width="150">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,38 +122,16 @@ Swal.fire({
                                     <td>{{ $sm->supplier->nama_supplier }}</td>
                                     <td>{{ $sm->produk->nama_produk }}</td>
                                     <td>{{ $sm->produk->warna }} ({{ $sm->produk->ukuran }})</td>
-                                    <td>{{ $sm->satuan }}</td>
                                     <td>{{ $sm->jumlah }}</td>
+                                    <td>{{ $sm->diskon }}%</td>
                                     <td>{{ $sm->produk->stok }}</td>
                                     <td>Rp {{ number_format($sm->harga_beli) }}</td>
-                                    <td>Rp {{ number_format($sm->diskon) }}</td>
-                                    <td>Rp {{ number_format($sm->harga_beli) }}</td>
+                                    <td>Rp {{ number_format($sm->total) }}</td>
                                     <td>{{ $sm->catatan }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="#" onclick="return confirm('Hapus data ini?')"
-                                                class="btn btn-danger btn-sm">Hapus</a>
-                                        </div>
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-
-                <div class="card-footer">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#modalTambah">
-                        Tambah Stok Masuk
-                    </button>
-                </div>
-                <div class="card-footer text-right">
-                    <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
-                        <i class="fa fa-file-excel"></i> Export Excel
-                    </a>
-                    <a href="{{ route('stok.masuk.exportP', request()->query()) }}" class="btn btn-danger">
-                        <i class="fa fa-file-pdf"></i> Export PDF
-                    </a>
                 </div>
                 <div class="modal fade" id="modalTambah" tabindex="-1">
                     <div class="modal-dialog modal-lg">
@@ -183,43 +172,32 @@ Swal.fire({
                                     <div class="row mt-2">
                                         <div class="col-md-4">
                                             <label>Qty Masuk</label>
-                                            <input type="number" name="jumlah" class="form-control hitung" required>
+                                            <input type="number" name="jumlah" placeholder="Masukkan jumlah stok masuk"
+                                                class="form-control hitung" required>
                                         </div>
-
                                         <div class="col-md-4">
-                                            <label>Satuan</label>
-                                            <select name="satuan" class="form-control" required>
-                                                <option value="">-- Pilih Satuan --</option>
-                                                <option value="PCS">PCS</option>
-                                                <option value="BOX">BOX</option>
-                                            </select>
+                                            <label>Harga Per PCS</label>
+                                            <input type="number" name="harga_beli" placeholder="Masukkan harga perPCS"
+                                                class="form-control hitung" required>
                                         </div>
-                                    </div>
-
-                                    <div class="row mt-2">
                                         <div class="col-md-4">
-                                            <label>Harga Beli</label>
-                                            <input type="number" name="harga_beli" class="form-control hitung" required>
+                                            <label>Diskon (%)</label>
+                                            <input type="number" name="diskon" placeholder="Masukkan diskon"
+                                                class="form-control hitung" value="0">
                                         </div>
-
-                                        <div class="col-md-4">
-                                            <label>Diskon</label>
-                                            <input type="number" name="diskon" class="form-control hitung" value="0">
-                                        </div>
-
                                         <div class="col-md-4">
                                             <label>Total</label>
                                             <input type="number" name="total" id="total" class="form-control" readonly>
                                         </div>
                                     </div>
-
                                     <div class="row mt-2">
                                         <div class="col-md-6">
                                             <label>Catatan</label>
-                                            <textarea class="form-control" name="catatan" required></textarea>
+                                            <textarea class="form-control" name="catatan"
+                                                placeholder="Contoh: Bonus pembelian, atau catatan khusus lainnya"
+                                                required></textarea>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="modal-footer">
@@ -246,19 +224,16 @@ Swal.fire({
         </ul>
     </div>
 @endif
-
-
-<!-- ================= MODAL TAMBAH STOK ================= -->
-
-
-{{-- Script hitung total --}}
 <script>
     document.addEventListener('input', function () {
-        let qty = document.querySelector('input[name="jumlah"]').value || 0;
-        let harga = document.querySelector('input[name="harga_beli"]').value || 0;
-        let diskon = document.querySelector('input[name="diskon"]').value || 0;
+        let qty = parseFloat(document.querySelector('input[name="jumlah"]').value) || 0;
+        let harga = parseFloat(document.querySelector('input[name="harga_beli"]').value) || 0;
+        let diskon = parseFloat(document.querySelector('input[name="diskon"]').value) || 0;
 
-        let total = (qty * harga) - diskon;
+        let subtotal = qty * harga;
+        let potongan = subtotal * (diskon / 100);
+        let total = subtotal - potongan;
+
         document.getElementById('total').value = total > 0 ? total : 0;
     });
 </script>

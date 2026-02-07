@@ -19,6 +19,7 @@ class Produk extends Authenticatable
         'kategori_id',
         'harga_jual',
         'warna',
+        'supplier_id',
         'ukuran',
         'status',
         'deskripsi',
@@ -28,6 +29,10 @@ class Produk extends Authenticatable
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
     
 

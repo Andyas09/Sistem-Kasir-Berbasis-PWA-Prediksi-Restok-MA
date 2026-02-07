@@ -6,7 +6,16 @@
     <!-- HEADER -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Data Laporan</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Data Laporan</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+                        <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
+                        <i class="fa fa-file-excel"></i> Export Excel
+                    </a>
+                    </div>
+            </div>
         </div>
     </section>
 
@@ -70,36 +79,62 @@
             <!-- RINGKASAN -->
             <div class="row mt-3">
 
-                <div class="col-md-3">
-                    <div class="info-box bg-success">
-                        <span class="info-box-text">Total Transaksi</span>
-                        <span class="info-box-number">{{ $ringkasan['total_transaksi'] }}</span>
+                <div class="col-md-3 col-6">
+                    <div class="info-box shadow-sm">
+                        <span class="info-box-icon bg-success">
+                            <i class="fas fa-receipt"></i>
+                        </span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Transaksi</span>
+                            <span class="info-box-number">{{ $ringkasan['total_transaksi'] }}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="info-box bg-info">
-                        <span class="info-box-text">Total Omzet</span>
-                        <span class="info-box-number">Rp
-                            {{ number_format($ringkasan['total_omzet'], 0, ',', '.') }}</span>
+                <div class="col-md-3 col-6">
+                    <div class="info-box shadow-sm">
+                        <span class="info-box-icon bg-info">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Omzet</span>
+                            <span class="info-box-number">
+                                Rp {{ number_format($ringkasan['total_omzet'], 0, ',', '.') }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="info-box bg-warning">
-                        <span class="info-box-text">Barang Masuk</span>
-                        <span class="info-box-number">{{ $ringkasan['barang_masuk'] }} Unit</span>
+                <div class="col-md-3 col-6">
+                    <div class="info-box shadow-sm">
+                        <span class="info-box-icon bg-warning">
+                            <i class="fas fa-arrow-down"></i>
+                        </span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Barang Masuk</span>
+                            <span class="info-box-number">
+                                {{ $ringkasan['barang_masuk'] }} <small>Unit</small>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="info-box bg-danger">
-                        <span class="info-box-text">Barang Keluar</span>
-                        <span class="info-box-number">{{ $ringkasan['barang_keluar'] }} Unit</span>
+                <div class="col-md-3 col-6">
+                    <div class="info-box shadow-sm">
+                        <span class="info-box-icon bg-danger">
+                            <i class="fas fa-arrow-up"></i>
+                        </span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Barang Keluar</span>
+                            <span class="info-box-number">
+                                {{ $ringkasan['barang_keluar'] }} <small>Unit</small>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
             </div>
+
 
             <!-- TABEL LAPORAN -->
             <div class="card mt-3">
@@ -134,15 +169,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <div class="card-footer text-right">
-                    <a href="{{ route('stok.masuk.exportE', parameters: request()->query()) }}" class="btn btn-success">
-                        <i class="fa fa-file-excel"></i> Export Excel
-                    </a>
-                    <a href="{{ route('stok.masuk.exportP', request()->query()) }}" class="btn btn-danger">
-                        <i class="fa fa-file-pdf"></i> Export PDF
-                    </a>
                 </div>
             </div>
 
