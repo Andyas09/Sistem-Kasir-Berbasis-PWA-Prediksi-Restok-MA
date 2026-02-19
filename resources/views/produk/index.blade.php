@@ -373,92 +373,106 @@ Swal.fire({
                                 </div>
 
                                 <div class="modal-body">
-                                    <div class="'form-group">
-                                            <label>Supplier</label>
-                                            <select name="supplier_id" class="form-control" required>
-                                                <option value="">-- Pilih Supplier --</option>
-                                                @foreach($supplier as $s)
-                                                    <option value="{{ $s->id }}">{{ $s->nama_supplier }}</option>
-                                                @endforeach
-                                            </select>
+                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-manual-tab" data-toggle="pill" href="#pills-manual" role="tab">Input Manual</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-excel-tab" data-toggle="pill" href="#pills-excel" role="tab">Import Excel</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="pills-tabContent">
+                                        {{-- manual --}}
+                                        <div class="tab-pane fade show active" id="pills-manual" role="tabpanel">
+                                            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="'form-group">
+                                                    <label>Supplier</label>
+                                                    <select name="supplier_id" class="form-control" required>
+                                                        <option value="">-- Pilih Supplier --</option>
+                                                        @foreach($supplier as $s)
+                                                            <option value="{{ $s->id }}">{{ $s->nama_supplier }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nama Produk</label>
+                                                    <input type="text" name="nama_produk" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block mb-2">Ukuran</label>
+                                                    <div class="d-flex flex-wrap gap-2">
+                                                        @foreach(['S','M','L','XL','Lainnya'] as $size)
+                                                            <label class="ukuran-box">
+                                                                <input type="radio" name="ukuran_pilihan" value="{{ strtolower($size) == 'lainnya' ? 'lainnya' : $size }}" class="ukuran-radio">
+                                                                <span>{{ $size }}</span>
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                    <input type="text" name="ukuran_lainnya" id="inputUkuranLainnya" class="form-control mt-3" placeholder="Masukkan ukuran lain" style="display:none;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Deskripsi</label>
+                                                    <input type="text" name="deskripsi" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Variasi</label>
+                                                    <input type="text" name="warna" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Harga Modal</label>
+                                                    <input type="number" name="harga_modal" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Harga Jual</label>
+                                                    <input type="number" name="harga_jual" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Stok</label>
+                                                    <input type="number" name="stok" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Kategori</label>
+                                                    <select name="kategori_id" class="form-control" required>
+                                                        <option value="">-- Pilih Kategori --</option>
+                                                        @foreach($kategoris as $kat)
+                                                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Gambar Produk</label>
+                                                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                                                    <small class="text-muted">Opsional (jpg, png)</small>
+                                                </div>
+                                                <div class="modal-footer px-0 pb-0">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-info">Simpan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {{-- excel --}}
+                                        <div class="tab-pane fade" id="pills-excel" role="tabpanel">
+                                            <form action="{{ route('produk.import-excel') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="alert alert-info py-2">
+                                                    <small><i class="fas fa-info-circle mr-1"></i> Gunakan format Excel yang sesuai untuk bulk import.</small>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>File Excel (.xlsx, .xls, .csv)</label>
+                                                    <input type="file" name="file" class="form-control" required>
+                                                </div>
+                                                <div class="modal-footer px-0 pb-0 mt-4">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="fas fa-file-excel mr-1"></i> Import Sekarang
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Nama Produk</label>
-                                        <input type="text" name="nama_produk" class="form-control" required>
-                                    </div>
-                                    
-
-                                    <div class="form-group">
-    <label class="d-block mb-2">Ukuran</label>
-
-    <div class="d-flex flex-wrap gap-2">
-
-        @foreach(['S','M','L','XL','Lainnya'] as $size)
-            <label class="ukuran-box">
-                <input type="radio"
-                       name="ukuran_pilihan"
-                       value="{{ strtolower($size) == 'lainnya' ? 'lainnya' : $size }}"
-                       class="ukuran-radio">
-
-                <span>{{ $size }}</span>
-            </label>
-        @endforeach
-
-    </div>
-
-    <input type="text"
-           name="ukuran_lainnya"
-           id="inputUkuranLainnya"
-           class="form-control mt-3"
-           placeholder="Masukkan ukuran lain"
-           style="display:none;">
-</div>
-
-
-<div class="form-group">
-                                        <label>Deskripsi</label>
-                                        <input type="text" name="deskripsi" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Variasi</label>
-                                        <input type="text" name="warna" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Harga Modal</label>
-                                        <input type="number" name="harga_modal" class="form-control" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Harga Jual</label>
-                                        <input type="number" name="harga_jual" class="form-control" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Stok</label>
-                                        <input type="number" name="stok" class="form-control" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Kategori</label>
-                                        <select name="kategori_id" class="form-control" required>
-                                            <option value="">-- Pilih Kategori --</option>
-                                            @foreach($kategoris as $kat)
-                                                <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Gambar Produk</label>
-                                        <input type="file" name="gambar" class="form-control" accept="image/*">
-                                        <small class="text-muted">Opsional (jpg, png)</small>
-                                    </div>
-
                                 </div>
-
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button class="btn btn-info">Simpan</button>
-                                </div>
+                            </div>
 
                             </form>
 

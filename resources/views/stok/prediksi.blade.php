@@ -43,7 +43,7 @@ Swal.fire({
 
             <!-- FILTER PREDIKSI -->
             <div class="card">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header text-white" style="background-color: #000B49;">
                     <h3 class="card-title">Parameter Prediksi</h3>
                 </div>
 
@@ -101,54 +101,129 @@ Swal.fire({
                     </div>
 
                     <div class="card-body">
-                        <div class="row text-center">
+                        <style>
+                            .prediction-card {
+                                border-radius: 12px;
+                                border: none;
+                                transition: all 0.3s ease;
+                                background: #fff;
+                                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                            }
+                            .prediction-card:hover {
+                                transform: translateY(-5px);
+                                box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+                            }
+                            .prediction-icon {
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 10px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 24px;
+                                margin-bottom: 15px;
+                            }
+                            .bg-soft-blue { background: #eef2ff; color: #4338ca; }
+                            .bg-soft-green { background: #ecfdf5; color: #047857; }
+                            .bg-soft-orange { background: #fff7ed; color: #c2410c; }
+                            .bg-soft-red { background: #fef2f2; color: #b91c1c; }
+                            
+                            .metric-value {
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                color: #1e293b;
+                            }
+                            .metric-label {
+                                color: #64748b;
+                                font-size: 0.875rem;
+                                text-transform: uppercase;
+                                letter-spacing: 0.025em;
+                                font-weight: 600;
+                            }
+                            .recommendation-banner {
+                                background: linear-gradient(135deg, #000B49 0%, #001a6e 100%);
+                                border-radius: 15px;
+                                padding: 25px;
+                                color: white;
+                                overflow: hidden;
+                                position: relative;
+                            }
+                            .recommendation-banner::after {
+                                content: '\f201';
+                                font-family: 'Font Awesome 5 Free';
+                                font-weight: 900;
+                                position: absolute;
+                                right: -20px;
+                                bottom: -20px;
+                                font-size: 120px;
+                                opacity: 0.1;
+                            }
+                        </style>
 
-                            <div class="col-md-3">
-                                <div class="info-box bg-light">
-                                    <span class="info-box-text">Stok Saat Ini</span>
-                                    <span class="info-box-number">{{ $prediksi['stok_sekarang'] }} Unit</span>
+                        <div class="row">
+
+                            <div class="col-md-3 mb-3">
+                                <div class="card prediction-card h-100 p-3">
+                                    <div class="prediction-icon bg-soft-blue">
+                                        <i class="fas fa-boxes"></i>
+                                    </div>
+                                    <span class="metric-label">Stok Saat Ini</span>
+                                    <span class="metric-value">{{ $prediksi['stok_sekarang'] }} <small>Unit</small></span>
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="info-box bg-light">
-                                    <span class="info-box-text">Rata-rata Penjualan</span>
-                                    <span class="info-box-number">{{ $prediksi['rata_rata'] }} Unit / Hari</span>
+                            <div class="col-md-3 mb-3">
+                                <div class="card prediction-card h-100 p-3">
+                                    <div class="prediction-icon bg-soft-green">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <span class="metric-label">Rata-rata Penjualan</span>
+                                    <span class="metric-value">{{ $prediksi['rata_rata'] }} <small>Unit / Hari</small></span>
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="info-box bg-light">
-                                    <span class="info-box-text">Safety Stock</span>
-                                    <span class="info-box-number">{{ $prediksi['safety_stock'] }} Unit</span>
+                            <div class="col-md-3 mb-3">
+                                <div class="card prediction-card h-100 p-3">
+                                    <div class="prediction-icon bg-soft-orange">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <span class="metric-label">Safety Stock</span>
+                                    <span class="metric-value">{{ $prediksi['safety_stock'] }} <small>Unit</small></span>
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="info-box bg-warning">
-                                    <span class="info-box-text">Estimasi Habis</span>
-                                    <span class="info-box-number">{{ $prediksi['estimasi_habis'] }} Hari</span>
+                            <div class="col-md-3 mb-3">
+                                <div class="card prediction-card h-100 p-3">
+                                    <div class="prediction-icon bg-soft-red">
+                                        <i class="fas fa-hourglass-half"></i>
+                                    </div>
+                                    <span class="metric-label">Estimasi Habis</span>
+                                    <span class="metric-value">{{ $prediksi['estimasi_habis'] }} <small>Hari</small></span>
                                 </div>
                             </div>
 
                         </div>
 
-                        <hr>
-
-                        <div class="text-center">
-                            <h4 class="text-danger">
-                                Rekomendasi Restok: <strong>{{ $prediksi['rekomendasi'] }} Unit</strong>
-                            </h4>
-                            <small>
-                                (Untuk mencukupi kebutuhan {{ request('periode') ?? 7 }} hari ke depan)
-                            </small>
+                        <div class="mt-4 recommendation-banner text-center shadow-lg">
+                            <h5 class="text-uppercase mb-2" style="letter-spacing: 2px; opacity: 0.8;">Rekomendasi Restok</h5>
+                            <h2 class="display-4 font-weight-bold mb-0">
+                                {{ $prediksi['rekomendasi'] }} <span style="font-size: 1.5rem">Unit</span>
+                            </h2>
+                            <p class="mb-0 mt-2" style="opacity: 0.9;">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Untuk mencukupi kebutuhan {{ request('periode') ?? 7 }} hari ke depan
+                            </p>
                         </div>
 
                     </div>
 
-                    <div class="card-footer text-right">
-                        <button class="btn btn-success btn-sm">Buat Pembelian</button>
-                        <button class="btn btn-secondary btn-sm">Export Laporan</button>
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-4 pr-4">
+                        <button class="btn btn-secondary btn-sm mr-2 shadow-sm">
+                            <i class="fas fa-file-export mr-1"></i> Export Laporan
+                        </button>
+                        <button class="btn btn-primary shadow-sm" style="background-color: #000B49; border: none;">
+                            <i class="fas fa-plus-circle mr-1"></i> Buat Pembelian
+                        </button>
                     </div>
                 </div>
             @endif

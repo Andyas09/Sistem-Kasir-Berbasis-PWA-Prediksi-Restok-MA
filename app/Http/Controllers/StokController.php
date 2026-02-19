@@ -182,9 +182,9 @@ class StokController extends Controller
 
     public function opname()
     {
-        $sesi = Opname::with('opname','user')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $sesi = Opname::with('opname', 'user')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('stok.opname', compact('sesi'), $this->setActive('stok-opname'));
     }
     public function destroy_opname($id)
@@ -366,14 +366,14 @@ class StokController extends Controller
 
         if ($request->filled('produk_id') && $request->filled('periode')) {
             $produk_id = $request->produk_id;
-            $periode = (int)$request->periode;
+            $periode = (int) $request->periode;
 
             $produkModel = Produk::find($produk_id);
             $stokSekarang = $produkModel->stok ?? 0;
 
             $startDate = Carbon::now()->subDays($periode);
             $histori = StokKeluar::where('produk_id', $produk_id)
-                ->where('alasan', 'penjualan')
+                ->where('alasan', 'Penjualan')
                 ->whereDate('created_at', '>=', $startDate)
                 ->orderBy('created_at')
                 ->get();
@@ -386,16 +386,17 @@ class StokController extends Controller
             $estimasiHabis = $rataRata > 0 ? round($stokSekarang / $rataRata, 1) : 0;
 
             $rekomendasi = round(($rataRata * $periode) + $safetyStock - $stokSekarang);
-            if ($rekomendasi < 0) $rekomendasi = 0;
+            if ($rekomendasi < 0)
+                $rekomendasi = 0;
 
             $prediksi = [
-                'produk'        => $produkModel,
+                'produk' => $produkModel,
                 'stok_sekarang' => $stokSekarang,
-                'rata_rata'     => $rataRata,
-                'safety_stock'  => $safetyStock,
-                'estimasi_habis'=> $estimasiHabis,
-                'rekomendasi'   => $rekomendasi,
-                'histori'       => $histori,
+                'rata_rata' => $rataRata,
+                'safety_stock' => $safetyStock,
+                'estimasi_habis' => $estimasiHabis,
+                'rekomendasi' => $rekomendasi,
+                'histori' => $histori,
             ];
         }
         return view('stok.prediksi', compact('produk', 'prediksi'), $this->setActive('stok-prediksi'));

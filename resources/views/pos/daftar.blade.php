@@ -5,7 +5,16 @@
     <section class="content-header">
         <div class="container-fluid">
             <h1>Daftar Transaksi</h1>
+            <div class="text-right">
+                <a href="{{ route('pos.exportE', parameters: request()->query()) }}" class="btn btn-success">
+                    <i class="fa fa-file-excel"></i> Export Excel
+                </a>
+                <a href="{{ route('pos.exportP', request()->query()) }}" class="btn btn-danger">
+                    <i class="fa fa-file-pdf"></i> Export PDF
+                </a>
+            </div>
         </div>
+
     </section>
 
     <section class="content">
@@ -122,14 +131,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card-footer text-right">
-                <a href="{{ route('pos.daftar', parameters: request()->query()) }}" class="btn btn-success">
-                    <i class="fa fa-file-excel"></i> Export Excel
-                </a>
-                <a href="{{ route('pos.daftar', request()->query()) }}" class="btn btn-danger">
-                    <i class="fa fa-file-pdf"></i> Export PDF
-                </a>
-            </div>
+
         </div>
     </section>
 </div>

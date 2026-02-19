@@ -136,7 +136,7 @@ Swal.fire({
 
 
             <!-- ================== KERANJANG ================== -->
-            <div class="card-body">
+            <div class="card-body" id="keranjang">
                 <table class="table table-bordered">
                     <thead>
                         <tr>

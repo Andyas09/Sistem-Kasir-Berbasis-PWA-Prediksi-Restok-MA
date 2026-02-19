@@ -64,8 +64,17 @@ Route::middleware(['auth', 'role:Admin,Kasir'])->prefix('pos')->name('pos.')->gr
     Route::get('/retur', [PosController::class, 'retur'])
         ->name('retur');
 
+    Route::get('/retur/check', [PosController::class, 'returCheck'])
+        ->name('retur.check');
+
+    Route::post('/retur/proses', [PosController::class, 'returProses'])
+        ->name('retur.proses');
+
     Route::get('/hold', [PosController::class, 'hold'])
         ->name('hold');
+
+    Route::delete('/hold/{id}', [PosController::class, 'hapusHold'])
+        ->name('hold.destroy');
 
     Route::get('/riwayat', [PosController::class, 'riwayat'])
         ->name('riwayat');
@@ -75,13 +84,14 @@ Route::middleware(['auth', 'role:Admin,Kasir'])->prefix('pos')->name('pos.')->gr
     Route::post('/cart/remove/{id}', [PosController::class, 'cartRemove'])->name('cart.remove');
 
     Route::post('/pending', [PosController::class, 'pending'])->name('pending');
+    Route::post('/hold/{id}/bayar', [PosController::class, 'bayarHold'])->name('hold.bayar');
     Route::post('/bayar', [PosController::class, 'bayar'])->name('bayar');
     Route::get('/struk/{id}', [PosController::class, 'struk'])
         ->name('struk');
     Route::get('/export-pos-excel', [PosController::class, 'exportExcel'])
-        ->name('daftar.exportE');
+        ->name('exportE');
     Route::get('/export-pos-pdf', [PosController::class, 'exportPdf'])
-        ->name('daftar.exportP');
+        ->name('exportP');
 
 
 });
@@ -95,7 +105,8 @@ Route::middleware(['auth', 'role:Admin,Kasir'])->group(function () {
         ->name('produk.update');
     Route::delete('/produks/{id}', [ProdukController::class, 'destroy'])
         ->name('produk.destroy');
-
+    Route::get('/import', [StokController::class, 'importExcel'])
+        ->name('produk.import-excel');
 });
 
 Route::middleware(['auth', 'role:Admin,Kasir'])->group(function () {

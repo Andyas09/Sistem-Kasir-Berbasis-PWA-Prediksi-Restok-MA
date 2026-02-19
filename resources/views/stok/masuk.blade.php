@@ -119,7 +119,7 @@
                                     <td>{{ $sm->created_at->format('H:i') }}</td>
                                     <td>{{ $sm->sku }}</td>
                                     <td>{{ $sm->user->nama }}</td>
-                                    <td>{{ $sm->supplier->nama_supplier }}</td>
+                                    <td>{{ $sm->supplier->nama_supplier ?? '-' }}</td>
                                     <td>{{ $sm->produk->nama_produk }}</td>
                                     <td>{{ $sm->produk->warna }} ({{ $sm->produk->ukuran }})</td>
                                     <td>{{ $sm->jumlah }}</td>

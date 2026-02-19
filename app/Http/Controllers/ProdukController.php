@@ -145,4 +145,22 @@ class ProdukController extends Controller
         return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048'
+        ]);
+
+        try {
+            \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\ProdukImport, $request->file('file'));
+            return back()->with('success', 'Data produk berhasil diimport dari Excel');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengimport data: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ProdukTemplateExport, 'template_import_produk.xlsx');
+    }
 }
